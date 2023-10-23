@@ -2,8 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const dotenv = require("dotenv");
+const authRoute = require("./Routes/auth");
 
 dotenv.config();
+
+app.use(express.json()); //middleware function working for all routes
+app.use("/api/auth", authRoute);
 
 const connectDB = async () => {
   try {
