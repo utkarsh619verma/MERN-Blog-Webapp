@@ -4,10 +4,11 @@ const User = require("../Models/User");
 const Post = require("../Models/Post");
 const Comment = require("../Models/Comment");
 const bcrypt = require("bcrypt");
+const verifytoken = require("../verifytoken");
 
 //CREATE COMMENT
 
-router.post("/", async (req, res) => {
+router.post("/", verifytoken, async (req, res) => {
   try {
     const newcomment = new Comment(req.body);
     const savecomment = await newcomment.save();
@@ -19,7 +20,7 @@ router.post("/", async (req, res) => {
 
 //UPDATE COMMENT
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifytoken, async (req, res) => {
   try {
     const updatedcomment = await Comment.findByIdAndUpdate(
       req.params.id,
@@ -34,7 +35,7 @@ router.put("/:id", async (req, res) => {
 
 //DELETE COMMENT
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifytoken, async (req, res) => {
   try {
     await Comment.findByIdAndDelete(req.params.id);
     res.send("comment deleted successfully");

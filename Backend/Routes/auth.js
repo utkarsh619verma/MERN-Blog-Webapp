@@ -34,9 +34,9 @@ router.post("/login", async (req, res) => {
     const jwt_token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
       expiresIn: "3d",
     });
-    const { password, ...infoss } = user._doc; //This code extracts the password property from the user object and stores it in a variable called password.
+    const { password, ...info } = user._doc; //This code extracts the password property from the user object and stores it in a variable called password.
     //The rest of the user information is stored in an object called info. The ... syntax is used for object destructuring to collect all other properties in the user object except password.
-    res.cookie("jwtToken", jwt_token).status(200).json(infoss);
+    res.cookie("jwtToken", jwt_token).status(200).json(info);
   } catch (error) {
     res.status(500).json(error);
   }

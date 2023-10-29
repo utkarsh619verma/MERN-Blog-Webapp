@@ -4,10 +4,11 @@ const User = require("../Models/User");
 const Post = require("../Models/Post");
 const Comment = require("../Models/Comment");
 const bcrypt = require("bcrypt");
+const verifytoken = require("../verifytoken");
 
 //CREATE POST
 
-router.post("/create", async (req, res) => {
+router.post("/create", verifytoken, async (req, res) => {
   try {
     const newPost = new Post(req.body);
     const savePost = await newPost.save();
@@ -19,7 +20,7 @@ router.post("/create", async (req, res) => {
 
 //UPDATE POST
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifytoken, async (req, res) => {
   try {
     const updatedpost = await Post.findByIdAndUpdate(
       req.params.id,
@@ -34,7 +35,7 @@ router.put("/:id", async (req, res) => {
 
 //DELETE USER
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifytoken, async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
     res.send("Post deleted successfully");
