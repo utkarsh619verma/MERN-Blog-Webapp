@@ -7,11 +7,13 @@ const userRoute = require("./Routes/user");
 const postRoute = require("./Routes/posts");
 const commentRoute = require("./Routes/comments");
 const cookieParser = require("cookie-parser");
+const CORS = require("cors");
 
 dotenv.config();
 
 app.use(express.json()); //middleware function working for all routes
 app.use(cookieParser()); //cookie-parser is used to parse cookies from incoming HTTP requests, making them accessible via req.cookies.
+app.use(CORS({ origin: "http://localhost:5173", credentials: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/post", postRoute);
