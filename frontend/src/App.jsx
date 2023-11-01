@@ -6,10 +6,11 @@ import { PostDetails } from "./pages/PostDetails";
 import { CreatePost } from "./pages/CreatePost";
 import { EditPost } from "./pages/EditPost";
 import { Profile } from "./pages/Profile";
+import { UserContext } from "./Context/UserContext";
 
 export function App() {
   return (
-    <>
+    <UserContext>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
@@ -19,6 +20,6 @@ export function App() {
         <Route exact path="/edit/:id" element={<EditPost />} />
         <Route exact path="/profile/:id" element={<Profile />} />
       </Routes>
-    </>
+    </UserContext>
   );
 }

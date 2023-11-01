@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { Footer } from "../components/footer";
 import axios from "axios";
 import { URL } from "../../url";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { usercontext } from "../Context/UserContext";
 
 export const Login = () => {
   const [username, setusername] = useState("");
@@ -17,12 +18,16 @@ export const Login = () => {
     password: password,
     email: email,
   };
+  const { setUser } = useContext(usercontext);
   const loginuser = async () => {
     try {
-      const resp = await axios.post(URL + "/api/auth/login", logindata);
+      const resp = await axios.post(URL + "/api/auth/login", logindata, {
+        withCredentials: true,
+      });
       setusername(resp.data.username);
       setemail(resp.data.email);
       setpassword(resp.data.password);
+      setUser(resp.data);
       navigate("/");
     } catch (error) {
       seterror(true);

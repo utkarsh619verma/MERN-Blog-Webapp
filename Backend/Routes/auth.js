@@ -56,4 +56,16 @@ router.post("/logout", (req, res) => {
   }
 });
 
+//REFETCH USER
+
+router.get("/refetch", (req, res) => {
+  const token = req.cookies.jwt_token;
+  jwt.verify(token, process.env.SECRET_KEY, {}, async (err, data) => {
+    if (err) {
+      res.status(500).json(err);
+    }
+    res.status(200).json(data);
+  });
+});
+
 module.exports = router;

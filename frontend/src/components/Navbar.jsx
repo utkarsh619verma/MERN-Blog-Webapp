@@ -1,9 +1,11 @@
 import { BsSearch } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { Menu } from "./Menu";
+import { usercontext } from "../Context/UserContext";
+import { useContext } from "react";
 
 export function Navbar() {
-  const user = false;
+  const { user } = useContext(usercontext);
   return (
     <div className="flex max-h-7 justify-between px-6 mt-6 md:px-[200px]  ">
       <div className="logo">
@@ -41,7 +43,7 @@ export function Navbar() {
         )}
       </div>
       <div className="md:hidden">
-        <Menu />
+        <Menu user={user} />
       </div>
     </div>
   );
