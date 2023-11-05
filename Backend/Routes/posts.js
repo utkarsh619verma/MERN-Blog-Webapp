@@ -44,6 +44,20 @@ router.delete("/:id", verifytoken, async (req, res) => {
   }
 });
 
+//GET POST DETAILS
+
+router.get("/:id", async (req, res) => {
+  //The name of the parameter in the route pattern (:something in this case) is used as the key in req.params,
+  //so you can access it using that key in your route handler.
+  //However, it's important to make sure your route parameter name matches the field you intend to query in your database, or adjust your query accordingly.
+  try {
+    const data = await Post.findById(req.params.id); //this id here will match the id in the collection which has been provided by the database itself and not created seperately as a parameter
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //GET USER POSTS
 
 router.get("/user/:userId", async (req, res) => {
@@ -63,7 +77,7 @@ router.get("/", async (req, res) => {
     const filter =
       Object.keys(query).length === 0
         ? {}
-        : { username: { $regex: query.username, $options: "i" } };
+        : { title: { $regex: query.search, $options: "i" } };
     console.log(filter);
     const result = await Post.find(filter);
     res.status(200).json(result);

@@ -1,17 +1,39 @@
+import { useParams } from "react-router-dom";
 import { Comments } from "../components/Comments";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/footer";
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { URL } from "../../url";
 
 export const PostDetails = () => {
+  const postid = useParams().id;
+  console.log(postid);
+  const [post, setPost] = useState({});
+  const [categories, setCategories] = useState([]);
+  const fetchpost = async () => {
+    try {
+      const res = await axios.get(URL + "/api/post/" + postid);
+      setPost(res.data);
+      console.log(res.data);
+      setCategories(post.categories);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchpost();
+    setCategories(post.categories);
+  }, [postid]);
   return (
     <>
       <Navbar />
       <div className="mt-12 md:px-[200px] px-8 ">
         <div className="flex justify-between items-center ">
           <h1 className="text-2xl font-bold text-black md:text-3xl">
-            10 Uses of Artifical Intelligence in Day to Day Life
+            {post.title}
           </h1>
           <div className="flex justify-center space-x-2 items-center">
             <p>
@@ -23,10 +45,13 @@ export const PostDetails = () => {
           </div>
         </div>
         <div className="flex justify-between mt-3 ">
-          <p>@thunderbolt985</p>
+          <p>
+            <span className="italic text-gray-600 ">created by ~ </span>
+            {post.username}
+          </p>
           <div className="flex justify-center items-center space-x-2 ">
-            <p>16/06/23</p>
-            <p>16:45</p>
+            <p>{new Date(post.updatedAt).toString().slice(0, 10)}</p>
+            <p>{new Date(post.updatedAt).toString().slice(15, 21)}</p>
           </div>
         </div>
         <img
@@ -49,8 +74,14 @@ export const PostDetails = () => {
         <div className="flex mt-8 space-x-4 items-center ">
           <p className="font-bold">Categories:</p>
           <div className="flex justify-center items-center  space-x-2">
-            <div className="bg-gray-300 rounded-lg px-3 py-1">Tech</div>
-            <div className="bg-gray-300 rounded-lg px-3 py-1">AI</div>
+            {categories &&
+              categories.map((category, index) => (
+                <>
+                  <div key={index} className="bg-gray-300 rounded-lg px-3 py-1">
+                    {category}
+                  </div>
+                </>
+              ))}
           </div>
         </div>
         <div className="mt-4 flex flex-col ">

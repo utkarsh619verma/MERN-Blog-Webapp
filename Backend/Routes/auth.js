@@ -31,9 +31,13 @@ router.post("/login", async (req, res) => {
     if (!match) {
       return res.status(500).json("Invalid Password!");
     }
-    const jwt_token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-      expiresIn: "3d",
-    });
+    const jwt_token = jwt.sign(
+      { _id: user._id, username: user.username, email: user.email },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "3d",
+      }
+    );
     const { password, ...info } = user._doc; //This code extracts the password property from the user object and stores it in a variable called password.
     //The rest of the user information is stored in an object called info. The ... syntax is used for object destructuring to collect all other properties in the user object except password.
     res.cookie("jwtToken", jwt_token).status(200).json(info);
@@ -44,7 +48,7 @@ router.post("/login", async (req, res) => {
 
 //LOGOUT
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   try {
     res
       .clearCookie("jwtToken", { sameSite: "none", secure: true }) //when samesite is none the cookie can be sent in all requests (both same and cross site) and in this case
@@ -59,7 +63,7 @@ router.post("/logout", (req, res) => {
 //REFETCH USER
 
 router.get("/refetch", (req, res) => {
-  const token = req.cookies.jwt_token;
+  const token = req.cookies.jwtToken;
   jwt.verify(token, process.env.SECRET_KEY, {}, async (err, data) => {
     if (err) {
       res.status(500).json(err);

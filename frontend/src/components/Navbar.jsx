@@ -1,11 +1,13 @@
 import { BsSearch } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu } from "./Menu";
 import { usercontext } from "../Context/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export function Navbar() {
   const { user } = useContext(usercontext);
+  const [searchprompt, setPrompt] = useState("");
+  const navigate = useNavigate();
   return (
     <div className="flex max-h-7 justify-between px-6 mt-6 md:px-[200px]  ">
       <div className="logo">
@@ -14,7 +16,11 @@ export function Navbar() {
         </h1>
       </div>
       <div className="flex items-center space-x-0 justify-center ">
-        <p>
+        <p
+          onClick={() =>
+            navigate(searchprompt ? "?search=" + searchprompt : navigate("/"))
+          }
+        >
           <BsSearch />
         </p>
         <input
@@ -23,12 +29,15 @@ export function Navbar() {
           placeholder="Search for a post"
           name=""
           id=""
+          onChange={(e) => {
+            setPrompt(e.target.value);
+          }}
         />
       </div>
       <div className=" hidden md:flex items-center justify-center space-x-2 md:space-x-4 ">
         {user ? (
-          <h3>
-            <Link to="/write">Write a Post</Link>
+          <h3 className="">
+            <Menu />
           </h3>
         ) : (
           <>
@@ -43,7 +52,7 @@ export function Navbar() {
         )}
       </div>
       <div className="md:hidden">
-        <Menu user={user} />
+        <Menu />
       </div>
     </div>
   );
