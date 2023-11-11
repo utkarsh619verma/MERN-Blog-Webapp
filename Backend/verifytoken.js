@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
+const user = require("./Models/User");
 const verifyToken = (req, res, next) => {
   const token = req.cookies.jwtToken;
-  console.log("asd " + token);
   if (token == null) {
-    return res.send("You are not authenticated ");
+    return res.status(401).json("You are not authenticated ");
   }
   jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
     if (err) {
-      return res.status(401).send("Token is not valid! ");
+      return res.status(403).send("Token is not valid! ");
     }
     req.userId = user._id;
     next();

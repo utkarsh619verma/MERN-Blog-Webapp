@@ -44,7 +44,7 @@ router.delete("/:id", verifytoken, async (req, res) => {
   }
 });
 
-//GET ALL POSTS
+//GET ALL COMMENTS FROM POST
 
 router.get("/post/:postId", async (req, res) => {
   try {

@@ -1,19 +1,77 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, useContext } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/footer";
 import { ImCross } from "react-icons/im";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { URL } from "../../url";
+import { usercontext } from "../Context/UserContext";
 
 export const EditPost = () => {
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [file, setFile] = useState(null);
+  const postid = useParams().id;
   const [cat, setcat] = useState("");
   const [category, addcat] = useState([]);
-
+  const { user } = useContext(usercontext);
+  const navigate = useNavigate();
   const addCategory = () => {
     // Create a copy of the category array and add the new category
     const updatedCats = [...category, cat];
     addcat(updatedCats);
     setcat("");
   };
+  const fetchpost = async () => {
+    try {
+      const postdetails = await axios.get(URL + "/api/post/" + postid);
+      setTitle(postdetails.data.title);
+      setDesc(postdetails.data.description);
+      setFile(postdetails.data.photo);
+      setcat(postdetails.data.categories);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updatepost = async () => {
+    const postdata = {
+      title: title,
+      description: desc,
+      photo: null,
+      username: user?.username,
+      userid: user?.user_id,
+      categories: category,
+    };
+    if (file) {
+      const data = new FormData();
+      const filename = Date.now() + file.img;
+      data.append("file", file);
+      data.append("img", filename);
+      postdata.photo = data;
 
+      try {
+        const imgupload = await axios.post(URL + "/api/upload", data, {
+          withCredentials: true,
+        });
+        console.log(imgupload);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    try {
+      const res = await axios.put(URL + "/api/post/" + postid, postdata, {
+        withCredentials: true,
+      });
+      console.log(res);
+      navigate("/posts/post/" + res.data._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchpost();
+  }, [postid]);
   return (
     <>
       <Navbar />
@@ -25,6 +83,10 @@ export const EditPost = () => {
             name=""
             className="px-4 py-2 outline-none"
             placeholder="Enter post title"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
             id=""
           />
           <input type="file" name="" className="px-4" id="" />
@@ -52,12 +114,6 @@ export const EditPost = () => {
             </div>
             <div className="flex px-4 mt-3">
               {category.map((element, ind) => {
-                {
-                  {
-                    console.log(category);
-                  }
-                  <h1>element</h1>;
-                }
                 <div
                   key={ind}
                   className=" flex justify-center items-center bg-gray-200 px-2 py-1 rounded-md space-x-2 mr-4 "
@@ -75,8 +131,18 @@ export const EditPost = () => {
             cols={31}
             className="px-4 py-2 outline outline-1 mt-3 ml-4  "
             placeholder="Enter post description"
+            value={desc}
+            onChange={(e) => {
+              setDesc(e.target.value);
+            }}
           />
-          <button className="bg-black text-white   md:mx-auto md:w-[20%] font-semibold text-lg md:text-xl w-full px-4 py-4 mt-[30px]">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              updatepost();
+            }}
+            className="bg-black text-white   md:mx-auto md:w-[20%] font-semibold text-lg md:text-xl w-full px-4 py-4 mt-[30px]"
+          >
             Save Changes
           </button>
         </form>

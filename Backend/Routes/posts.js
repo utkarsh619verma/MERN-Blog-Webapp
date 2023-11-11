@@ -33,11 +33,13 @@ router.put("/:id", verifytoken, async (req, res) => {
   }
 });
 
-//DELETE USER
+//DELETE POST
 
-router.delete("/:id", verifytoken, async (req, res) => {
+router.delete("/delete/:id", verifytoken, async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
+    await Comment.deleteMany({ postId: req.params.id });
+    console.log("Deleting");
     res.send("Post deleted successfully");
   } catch (error) {
     res.send(error);
@@ -52,6 +54,7 @@ router.get("/:id", async (req, res) => {
   //However, it's important to make sure your route parameter name matches the field you intend to query in your database, or adjust your query accordingly.
   try {
     const data = await Post.findById(req.params.id); //this id here will match the id in the collection which has been provided by the database itself and not created seperately as a parameter
+    console.log("ad ");
     res.status(200).json(data);
   } catch (error) {
     console.log(error);
