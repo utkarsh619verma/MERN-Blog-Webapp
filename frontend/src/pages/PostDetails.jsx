@@ -165,7 +165,7 @@ export const PostDetails = () => {
                 e.preventDefault();
                 addcomment();
               }}
-              className="bg-black text-white px-4 py-2 md:w-[10%] mt-4 md:mt-0 "
+              className="bg-black text-white px-4 py-2 md:w-[20%] mt-4 md:mt-0 "
             >
               Add Comment
             </button>

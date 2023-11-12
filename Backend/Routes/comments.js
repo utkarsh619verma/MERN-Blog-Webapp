@@ -20,7 +20,7 @@ router.post("/", verifytoken, async (req, res) => {
 
 //UPDATE COMMENT
 
-router.put("/:id", verifytoken, async (req, res) => {
+router.put("/update/:id", verifytoken, async (req, res) => {
   try {
     const updatedcomment = await Comment.findByIdAndUpdate(
       req.params.id,
