@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
       { _id: user._id, username: user.username, email: user.email },
       process.env.SECRET_KEY,
       {
-        expiresIn: "3d",
+        expiresIn: "3h",
       }
     );
     const { password, ...info } = user._doc; //This code extracts the password property from the user object and stores it in a variable called password.

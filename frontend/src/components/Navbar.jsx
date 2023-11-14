@@ -23,16 +23,22 @@ export function Navbar() {
         >
           <BsSearch />
         </p>
-        <input
-          type="search"
-          className="outline-none px-3 "
-          placeholder="Search for a post"
-          name=""
-          id=""
-          onChange={(e) => {
-            setPrompt(e.target.value);
+        <form
+          action="post"
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate(searchprompt ? "?search=" + searchprompt : navigate("/"));
           }}
-        />
+        >
+          <input
+            type="search"
+            className="outline-none px-3 "
+            placeholder="Search for a post"
+            onChange={(e) => {
+              setPrompt(e.target.value);
+            }}
+          />
+        </form>
       </div>
       <div className=" hidden md:flex items-center justify-center space-x-2 md:space-x-4 ">
         {user ? (

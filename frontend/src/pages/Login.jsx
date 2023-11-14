@@ -51,7 +51,6 @@ export const Login = () => {
             className="w-full px-4  my-5 py-2 border-2 border-black outline-0"
             type="text"
             name=""
-            id=""
             placeholder="Username"
             onChange={(e) => {
               setusername(e.target.value);
@@ -61,7 +60,6 @@ export const Login = () => {
             className="w-full px-4  my-5 py-2 border-2 border-black outline-0"
             type="email"
             name=""
-            id=""
             placeholder="Email"
             onChange={(e) => {
               setemail(e.target.value);
@@ -71,7 +69,6 @@ export const Login = () => {
             className="w-full px-4 my-5  py-2 border-2 border-black outline-0"
             type="password"
             name=""
-            id=""
             placeholder="Password"
             onChange={(e) => {
               setpassword(e.target.value);

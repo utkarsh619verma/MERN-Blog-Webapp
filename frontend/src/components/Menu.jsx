@@ -42,10 +42,10 @@ export function Menu() {
       {show && (
         <>
           <div
-            className={`bg-[black] fixed w-[100%] h-[100vh] top-0 left-0 opacity-[0.7] `}
+            className={`bg-[black] z-10 fixed w-[100%] h-[100vh] top-0 left-0 opacity-[0.7] `}
           ></div>
           <div
-            className={`fixed h-[100vh]  w-[50vw] py-[20px] space-y-8 px-[50px] bg-black text-white md:w-[20vw] right-0 top-0`}
+            className={`fixed h-[100vh] z-20  w-[50vw] py-[20px] space-y-8 px-[50px] bg-black text-white md:w-[20vw] right-0 top-0`}
           >
             <FaBars
               className="cursor-pointer"
@@ -68,7 +68,7 @@ export function Menu() {
                 <Link to="/profile/:id">Profile</Link>
               </p>
               <p className="p-5">
-                <Link to="/write">Write</Link>
+                <Link to="/write">Create New Post</Link>
               </p>
               <p className="p-5">
                 <Link to="/profile/:id">My Blogs</Link>

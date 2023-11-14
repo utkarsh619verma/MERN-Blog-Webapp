@@ -72,7 +72,7 @@ router.get("/user/:userId", async (req, res) => {
   }
 });
 
-//GET ALL POSTS
+//GET ALL POSTS OR SPECIFIC POSTS
 
 router.get("/", async (req, res) => {
   try {
@@ -80,8 +80,13 @@ router.get("/", async (req, res) => {
     const filter =
       Object.keys(query).length === 0
         ? {}
-        : { title: { $regex: query.search, $options: "i" } };
-    console.log(filter);
+        : {
+            $or: [
+              { title: { $regex: query.search, $options: "i" } },
+              { username: { $regex: query.search, $options: "i" } },
+              { categories: { $regex: query.search, $options: "i" } },
+            ],
+          };
     const result = await Post.find(filter);
     res.status(200).json(result);
   } catch (error) {
@@ -90,3 +95,11 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+
+// {
+//   $or: [
+//     { title: { $regex: query.search, options: "i" } },
+//     { username: { $regex: query.search, options: "i" } },
+//     { categories: { $regex: query.search, options: "i" } },
+//   ],
+// };
